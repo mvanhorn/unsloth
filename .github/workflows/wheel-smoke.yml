@@ -121,6 +121,149 @@ jobs:
               sys.exit(0 if all(checks.values()) else 1)
           PY
 
+      - name: Wheel dependency metadata sanity
+        run: |
+          python - <<'PY'
+          import glob
+          import sys
+          import zipfile
+          from email.parser import BytesParser
+
+          from packaging.markers import default_environment
+          from packaging.requirements import Requirement
+          from packaging.utils import canonicalize_name
+
+          wheels = glob.glob("dist/unsloth-*.whl")
+          if len(wheels) != 1:
+              print(f"FAIL: expected one wheel in dist/, got {wheels}")
+              sys.exit(2)
+
+          with zipfile.ZipFile(wheels[0]) as wheel:
+              metadata_files = [
+                  name for name in wheel.namelist()
+                  if name.endswith(".dist-info/METADATA")
+              ]
+              if len(metadata_files) != 1:
+                  print(f"FAIL: expected one .dist-info/METADATA, got {metadata_files}")
+                  sys.exit(2)
+              metadata = BytesParser().parsebytes(wheel.read(metadata_files[0]))
+
+          project_name = canonicalize_name(metadata["Name"])
+          requirements = [
+              Requirement(value) for value in metadata.get_all("Requires-Dist", [])
+          ]
+          windows_314 = default_environment()
+          windows_314.update(
+              os_name = "nt",
+              sys_platform = "win32",
+              platform_machine = "AMD64",
+              platform_system = "Windows",
+              python_version = "3.14",
+              python_full_version = "3.14.0",
+              implementation_name = "cpython",
+              platform_python_implementation = "CPython",
+          )
+
+          def applies(requirement, extra, environment):
+              if requirement.marker is None:
+                  return True
+              marker_environment = environment.copy()
+              marker_environment["extra"] = extra
+              return requirement.marker.evaluate(marker_environment)
+
+          def dependency_closure(root_extra, environment):
+              pending = [root_extra]
+              visited = set()
+              selected = []
+              while pending:
+                  extra = pending.pop()
+                  if extra in visited:
+                      continue
+                  visited.add(extra)
+                  for requirement in requirements:
+                      if not applies(requirement, extra, environment):
+                          continue
+                      if canonicalize_name(requirement.name) == project_name:
+                          pending.extend(sorted(requirement.extras))
+                      else:
+                          selected.append((extra, requirement))
+              return visited, selected
+
+          failures = []
+
+          def fail(message):
+              failures.append(message)
+              print(f"FAIL: {message}")
+
+          expected_xpu_urls = {
+              "intel-gpu-torch2110": {
+                  "triton-xpu": "https://download.pytorch.org/whl/triton_xpu-3.7.0-cp314-cp314-win_amd64.whl#sha256=c6cc245805e85be3bd0db8672e8f340dac4c5c53cac66d8d6458739c327c91af",
+                  "torch": "https://download.pytorch.org/whl/xpu/torch-2.11.0%2Bxpu-cp314-cp314-win_amd64.whl#sha256=3a0b9dc0bc316b8249bf22cc697ccfd221f68879a2c3198909f1a2752d7f6e9f",
+                  "torchvision": "https://download.pytorch.org/whl/xpu/torchvision-0.26.0%2Bxpu-cp314-cp314-win_amd64.whl#sha256=a86ef43f90c58babcd84dee92f9fb00e68fa4b39b63c5bcdcb282ac38e7036a2",
+              },
+              "intel-gpu-torch2120": {
+                  "triton-xpu": "https://download.pytorch.org/whl/triton_xpu-3.7.1-cp314-cp314-win_amd64.whl#sha256=ec6b0112d272b5fc28e818c59b839ee8c8054d956b1615e575980d91b1bfa9bf",
+                  "torch": "https://download.pytorch.org/whl/xpu/torch-2.12.0%2Bxpu-cp314-cp314-win_amd64.whl#sha256=2327c55e624483159eb9ad1d4cd0198896a3404951aa1e03418f282884d60b87",
+                  "torchvision": "https://download.pytorch.org/whl/xpu/torchvision-0.27.0%2Bxpu-cp314-cp314-win_amd64.whl#sha256=7db2bec228cab23ec10c54dbc3a7b8bdbbd92b6e644bf27f6b2954a93babe007",
+              },
+          }
+          excluded_environments = {
+              "Python 3.13": dict(windows_314, python_version = "3.13", python_full_version = "3.13.0"),
+              "Python 3.14.1": dict(windows_314, python_full_version = "3.14.1"),
+              "Linux": dict(windows_314, os_name = "posix", sys_platform = "linux", platform_system = "Linux"),
+              "Windows ARM64": dict(windows_314, platform_machine = "ARM64"),
+          }
+
+          for root_extra, expected in expected_xpu_urls.items():
+              failures_before = len(failures)
+              visited, selected = dependency_closure(root_extra, windows_314)
+              forbidden = [
+                  str(requirement) for _, requirement in selected
+                  if canonicalize_name(requirement.name) in {"triton", "triton-windows"}
+              ]
+              if forbidden:
+                  fail(f"{root_extra} reaches generic Triton requirements: {forbidden}")
+
+              for package, expected_url in expected.items():
+                  matches = [
+                      (extra, requirement) for extra, requirement in selected
+                      if canonicalize_name(requirement.name) == package
+                  ]
+                  if len(matches) != 1:
+                      fail(f"{root_extra} must select exactly one {package}, got {matches}")
+                      continue
+                  origin_extra, requirement = matches[0]
+                  if requirement.url != expected_url:
+                      fail(
+                          f"{root_extra} selected the wrong {package} URL:\n"
+                          f"  expected: {expected_url}\n"
+                          f"  actual:   {requirement.url}"
+                      )
+                  if requirement.marker is None:
+                      fail(f"{root_extra} {package} cp314 row is unqualified")
+                  for label, environment in excluded_environments.items():
+                      if applies(requirement, origin_extra, environment):
+                          fail(f"{root_extra} {package} cp314 row also applies to {label}")
+
+              print(
+                  f"{'PASS' if len(failures) == failures_before else 'CHECK'}: "
+                  f"{root_extra} follows {sorted(visited)} "
+                  "and selects one cp314 XPU torch/Triton/torchvision set"
+              )
+
+          _, triton_selected = dependency_closure("triton", windows_314)
+          triton_windows = [
+              requirement for _, requirement in triton_selected
+              if canonicalize_name(requirement.name) == "triton-windows"
+          ]
+          if len(triton_windows) != 1:
+              fail(f"triton extra must select one triton-windows, got {triton_windows}")
+          else:
+              print("PASS: triton extra still selects triton-windows on Windows x86-64")
+
+          sys.exit(0 if not failures else 1)
+          PY
+
       - name: No test suites in wheel or sdist
         # tests/security/fixtures embeds a real supply-chain IOC literal, which got
         # the published sdist flagged by antivirus vendors (discussion #9577).

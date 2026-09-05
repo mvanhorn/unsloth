@@ -1404,6 +1404,7 @@ intelgputorch2110 = [
     "triton-xpu @ https://download.pytorch.org/whl/triton_xpu-3.7.0-cp311-cp311-win_amd64.whl#sha256=aa7de82f4265089e74f25a2701b7532e5c47d74224d877b61da1d66156e3f0c1 ; sys_platform == 'win32' and python_version == '3.11' and (platform_machine == 'AMD64' or platform_machine == 'x86_64')",
     "triton-xpu @ https://download.pytorch.org/whl/triton_xpu-3.7.0-cp312-cp312-win_amd64.whl#sha256=5ba3a31c6e1b259ad2d924e1b50f72a78c6ebd7eb4f364473bbf93e144734e80 ; sys_platform == 'win32' and python_version == '3.12' and (platform_machine == 'AMD64' or platform_machine == 'x86_64')",
     "triton-xpu @ https://download.pytorch.org/whl/triton_xpu-3.7.0-cp313-cp313-win_amd64.whl#sha256=e8b4caba9b2399ea4c7f9a2777042564dea5d6f9e586a2dcb015a4ce20f000f7 ; sys_platform == 'win32' and python_version == '3.13' and (platform_machine == 'AMD64' or platform_machine == 'x86_64')",
+    "triton-xpu @ https://download.pytorch.org/whl/triton_xpu-3.7.0-cp314-cp314-win_amd64.whl#sha256=c6cc245805e85be3bd0db8672e8f340dac4c5c53cac66d8d6458739c327c91af ; sys_platform == 'win32' and python_version == '3.14' and python_full_version != '3.14.1' and (platform_machine == 'AMD64' or platform_machine == 'x86_64')",
 
     "torch @ https://download.pytorch.org/whl/xpu/torch-2.11.0%2Bxpu-cp310-cp310-linux_x86_64.whl ; platform_system == 'Linux' and python_version == '3.10' and platform_machine == 'x86_64'",
     "torch @ https://download.pytorch.org/whl/xpu/torch-2.11.0%2Bxpu-cp311-cp311-linux_x86_64.whl ; platform_system == 'Linux' and python_version == '3.11' and platform_machine == 'x86_64'",
@@ -1413,6 +1414,7 @@ intelgputorch2110 = [
     "torch @ https://download.pytorch.org/whl/xpu/torch-2.11.0%2Bxpu-cp311-cp311-win_amd64.whl ; sys_platform == 'win32' and python_version == '3.11' and (platform_machine == 'AMD64' or platform_machine == 'x86_64')",
     "torch @ https://download.pytorch.org/whl/xpu/torch-2.11.0%2Bxpu-cp312-cp312-win_amd64.whl ; sys_platform == 'win32' and python_version == '3.12' and (platform_machine == 'AMD64' or platform_machine == 'x86_64')",
     "torch @ https://download.pytorch.org/whl/xpu/torch-2.11.0%2Bxpu-cp313-cp313-win_amd64.whl ; sys_platform == 'win32' and python_version == '3.13' and (platform_machine == 'AMD64' or platform_machine == 'x86_64')",
+    "torch @ https://download.pytorch.org/whl/xpu/torch-2.11.0%2Bxpu-cp314-cp314-win_amd64.whl#sha256=3a0b9dc0bc316b8249bf22cc697ccfd221f68879a2c3198909f1a2752d7f6e9f ; sys_platform == 'win32' and python_version == '3.14' and python_full_version != '3.14.1' and (platform_machine == 'AMD64' or platform_machine == 'x86_64')",
 
     "bitsandbytes @ https://github.com/bitsandbytes-foundation/bitsandbytes/releases/download/continuous-release_main/bitsandbytes-1.33.7.preview-py3-none-manylinux_2_24_x86_64.whl ; ('linux' in sys_platform) and (platform_machine == 'AMD64' or platform_machine == 'x86_64')",
     "bitsandbytes @ https://github.com/bitsandbytes-foundation/bitsandbytes/releases/download/continuous-release_main/bitsandbytes-1.33.7.preview-py3-none-win_amd64.whl ; (sys_platform == 'win32') and (platform_machine == 'AMD64' or platform_machine == 'x86_64')",
@@ -1425,6 +1427,7 @@ intelgputorch2110 = [
     "torchvision @ https://download.pytorch.org/whl/xpu/torchvision-0.26.0%2Bxpu-cp311-cp311-win_amd64.whl#sha256=83a6130100c6b6750d8aa9fd29e5d0c53b1c85b1153b8ed4139aea54fc1892cc ; sys_platform == 'win32' and python_version == '3.11' and (platform_machine == 'AMD64' or platform_machine == 'x86_64')",
     "torchvision @ https://download.pytorch.org/whl/xpu/torchvision-0.26.0%2Bxpu-cp312-cp312-win_amd64.whl#sha256=03788e0e5a5b85a2f09d11f0263d579fcb0cf5623d8810149be0e37836c2738c ; sys_platform == 'win32' and python_version == '3.12' and (platform_machine == 'AMD64' or platform_machine == 'x86_64')",
     "torchvision @ https://download.pytorch.org/whl/xpu/torchvision-0.26.0%2Bxpu-cp313-cp313-win_amd64.whl#sha256=cb1da1d378ce440f7d1e0ed8cf21bd280d904ab25a55c9453f8377825818df74 ; sys_platform == 'win32' and python_version == '3.13' and (platform_machine == 'AMD64' or platform_machine == 'x86_64')",
+    "torchvision @ https://download.pytorch.org/whl/xpu/torchvision-0.26.0%2Bxpu-cp314-cp314-win_amd64.whl#sha256=a86ef43f90c58babcd84dee92f9fb00e68fa4b39b63c5bcdcb282ac38e7036a2 ; sys_platform == 'win32' and python_version == '3.14' and python_full_version != '3.14.1' and (platform_machine == 'AMD64' or platform_machine == 'x86_64')",
 ]
 intel-gpu-torch2110 = [
     "unsloth[intelgputorch2110]"
@@ -1441,6 +1444,7 @@ intelgputorch2120 = [
     "triton-xpu @ https://download.pytorch.org/whl/triton_xpu-3.7.1-cp311-cp311-win_amd64.whl#sha256=8f4a63de73e3d632098f93c8f0bd77244958a47d7c5f728b8ff35f8a91fdb983 ; sys_platform == 'win32' and python_version == '3.11' and (platform_machine == 'AMD64' or platform_machine == 'x86_64')",
     "triton-xpu @ https://download.pytorch.org/whl/triton_xpu-3.7.1-cp312-cp312-win_amd64.whl#sha256=6589ece3adc2b1ab88d90ff1267afc25df5c7b868f0b633e732cac70df36cbde ; sys_platform == 'win32' and python_version == '3.12' and (platform_machine == 'AMD64' or platform_machine == 'x86_64')",
     "triton-xpu @ https://download.pytorch.org/whl/triton_xpu-3.7.1-cp313-cp313-win_amd64.whl#sha256=2fdf001a9b0575e8b1827127259bb9b13bf36e659882be74c2dfab46597d3e7a ; sys_platform == 'win32' and python_version == '3.13' and (platform_machine == 'AMD64' or platform_machine == 'x86_64')",
+    "triton-xpu @ https://download.pytorch.org/whl/triton_xpu-3.7.1-cp314-cp314-win_amd64.whl#sha256=ec6b0112d272b5fc28e818c59b839ee8c8054d956b1615e575980d91b1bfa9bf ; sys_platform == 'win32' and python_version == '3.14' and python_full_version != '3.14.1' and (platform_machine == 'AMD64' or platform_machine == 'x86_64')",
 
     "torch @ https://download.pytorch.org/whl/xpu/torch-2.12.0%2Bxpu-cp310-cp310-linux_x86_64.whl#sha256=e8923cd1fe560472904b1461b745d2f1826bb9c1bc0808225d5f28a450e4d553 ; platform_system == 'Linux' and python_version == '3.10' and platform_machine == 'x86_64'",
     "torch @ https://download.pytorch.org/whl/xpu/torch-2.12.0%2Bxpu-cp311-cp311-linux_x86_64.whl#sha256=f7c082b2fc9b61def594d30ea57762dc4a8bc7111a9a9593953ed948de242e28 ; platform_system == 'Linux' and python_version == '3.11' and platform_machine == 'x86_64'",
@@ -1450,6 +1454,7 @@ intelgputorch2120 = [
     "torch @ https://download.pytorch.org/whl/xpu/torch-2.12.0%2Bxpu-cp311-cp311-win_amd64.whl#sha256=7ef8e776c992e4e3ae007ebc108eb4f36b1d1dd9da97ecb308ab7fded89a2659 ; sys_platform == 'win32' and python_version == '3.11' and (platform_machine == 'AMD64' or platform_machine == 'x86_64')",
     "torch @ https://download.pytorch.org/whl/xpu/torch-2.12.0%2Bxpu-cp312-cp312-win_amd64.whl#sha256=7f1d40febf2b8724adf4ff23866897d87478cc43de2a20f7776dc00be334c464 ; sys_platform == 'win32' and python_version == '3.12' and (platform_machine == 'AMD64' or platform_machine == 'x86_64')",
     "torch @ https://download.pytorch.org/whl/xpu/torch-2.12.0%2Bxpu-cp313-cp313-win_amd64.whl#sha256=32770e2613df26e2c81ae64ea001b2ca12b8d152231285caff9b5f963a21ad75 ; sys_platform == 'win32' and python_version == '3.13' and (platform_machine == 'AMD64' or platform_machine == 'x86_64')",
+    "torch @ https://download.pytorch.org/whl/xpu/torch-2.12.0%2Bxpu-cp314-cp314-win_amd64.whl#sha256=2327c55e624483159eb9ad1d4cd0198896a3404951aa1e03418f282884d60b87 ; sys_platform == 'win32' and python_version == '3.14' and python_full_version != '3.14.1' and (platform_machine == 'AMD64' or platform_machine == 'x86_64')",
 
     "bitsandbytes @ https://github.com/bitsandbytes-foundation/bitsandbytes/releases/download/continuous-release_main/bitsandbytes-1.33.7.preview-py3-none-manylinux_2_24_x86_64.whl ; ('linux' in sys_platform) and (platform_machine == 'AMD64' or platform_machine == 'x86_64')",
     "bitsandbytes @ https://github.com/bitsandbytes-foundation/bitsandbytes/releases/download/continuous-release_main/bitsandbytes-1.33.7.preview-py3-none-win_amd64.whl ; (sys_platform == 'win32') and (platform_machine == 'AMD64' or platform_machine == 'x86_64')",
@@ -1462,6 +1467,7 @@ intelgputorch2120 = [
     "torchvision @ https://download.pytorch.org/whl/xpu/torchvision-0.27.0%2Bxpu-cp311-cp311-win_amd64.whl#sha256=df647445365924d69fe3bb2a15a7edfe5b63ef91e4ae69af11d93582985237a4 ; sys_platform == 'win32' and python_version == '3.11' and (platform_machine == 'AMD64' or platform_machine == 'x86_64')",
     "torchvision @ https://download.pytorch.org/whl/xpu/torchvision-0.27.0%2Bxpu-cp312-cp312-win_amd64.whl#sha256=b0db3df0d0d154d18ba988ab420f1da2549f9372113ff54ff66e4ae3c7fe3bd0 ; sys_platform == 'win32' and python_version == '3.12' and (platform_machine == 'AMD64' or platform_machine == 'x86_64')",
     "torchvision @ https://download.pytorch.org/whl/xpu/torchvision-0.27.0%2Bxpu-cp313-cp313-win_amd64.whl#sha256=c70850842068c43a0d50eaf139c25b6f6cc9b17a0dae70218c7e69edbee0bc80 ; sys_platform == 'win32' and python_version == '3.13' and (platform_machine == 'AMD64' or platform_machine == 'x86_64')",
+    "torchvision @ https://download.pytorch.org/whl/xpu/torchvision-0.27.0%2Bxpu-cp314-cp314-win_amd64.whl#sha256=7db2bec228cab23ec10c54dbc3a7b8bdbbd92b6e644bf27f6b2954a93babe007 ; sys_platform == 'win32' and python_version == '3.14' and python_full_version != '3.14.1' and (platform_machine == 'AMD64' or platform_machine == 'x86_64')",
 ]
 intel-gpu-torch2120 = [
     "unsloth[intelgputorch2120]"
